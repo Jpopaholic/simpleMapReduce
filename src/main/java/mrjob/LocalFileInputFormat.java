@@ -24,7 +24,7 @@ public class LocalFileInputFormat extends InputFormat<Text,Text>
 			InterruptedException {
 		SingleFileInputSplit oneSpilt=(SingleFileInputSplit) arg0;
 		if(oneSpilt!=null)System.out.println(oneSpilt.getFileName());
-		RecordReader<Text, Text>result=new FileContextRecordReader(new Text(oneSpilt.getFileName()),new Text(oneSpilt.getFileContext()));
+		RecordReader<Text, Text>result=new FileContextRecordReader(new Text(oneSpilt.getFileName()),new Text(oneSpilt.getFileContext()),arg1.getConfiguration());
 		return result;
 	}
 

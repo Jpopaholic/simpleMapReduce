@@ -11,6 +11,10 @@ public class SingleFileInputSplit extends InputSplit implements  Writable{
 
 	private String fileName;
 	private String fileContext;
+	public SingleFileInputSplit()
+	{
+		super();
+	}
 	public SingleFileInputSplit(String fileName,String fileContext)
 	{
 		this.fileName=fileName;

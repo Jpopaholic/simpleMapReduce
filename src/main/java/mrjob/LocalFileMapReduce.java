@@ -13,9 +13,9 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class LocalFileMapReduce {
 	public static void main(String []argv) throws IOException, ClassNotFoundException, InterruptedException
 	{
-			Configuration conf;
+			Configuration conf = new Configuration();
 			String []remaningArgv=null;
-			GenericOptionsParser gop=new GenericOptionsParser(argv);
+			GenericOptionsParser gop=new GenericOptionsParser(conf,argv);
 			remaningArgv=gop.getRemainingArgs();
 		if(remaningArgv==null||remaningArgv.length!=2)
 		{
@@ -23,7 +23,6 @@ public class LocalFileMapReduce {
 		}
 		else
 		{
-			conf=new Configuration();
 			conf.set("filedir", remaningArgv[0]);
 			conf.set("zookeeper", remaningArgv[1]);
 				Job jb=Job.getInstance(conf,"TESTMR");
@@ -32,7 +31,7 @@ public class LocalFileMapReduce {
 				jb.setMapperClass(FileMapper.class);
 				jb.setOutputFormatClass(NullOutputFormat.class);
 				jb.setNumReduceTasks(0);
-				jb.submit();
+				jb.waitForCompletion(true);
 		}
 	}
 }
