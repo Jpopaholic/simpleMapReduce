@@ -47,32 +47,18 @@ public class LocalFileInputFormat extends InputFormat<Text,Text>
 					            	StringBuilder sb=new StringBuilder();
 					            	while((line=fin.readLine())!=null)
 					            	{
+					            		sb.append(line+"\n");
 					            		if(flush%SPLIT_ROWS==0)
-					            			{
-					            			    sb.append(line);
-					            				SingleFileInputSplit oneSpilt=new SingleFileInputSplit(singleFile.getName(),sb.toString());
-					            				out.add(oneSpilt);
-					            				sb.delete(0, sb.length());
-					            				flush=1;
-					            			}
-					            		else if(flush%SPLIT_ROWS==1)
 					            		{
-					            			sb.append(line);
-					            			flush++;
+					            			out.add(new SingleFileInputSplit(singleFile.getName(),sb.toString(),flush));
+					            			sb.delete(0, sb.length());
+					            			flush=0;
 					            		}
-					            		else
-					            		{
-					            			sb.append("\n");
-					            			sb.append(line);
-					            			flush++;
-					            		}
+					            		flush++;
 					            	}
-					            	//last split
-					            	if(sb.length()>0)
-					            		{
-					            			SingleFileInputSplit oneSpilt=new SingleFileInputSplit(singleFile.getName(),sb.toString());
-					            			out.add(oneSpilt);
-					            		}
+					            	//final split
+					            	if(sb.length()>0)out.add(new SingleFileInputSplit(singleFile.getName(),sb.toString(),flush-1));
+					            	sb.delete(0, sb.length());
 				            		fin.close();
 	            	}
 	            }
