@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.InputFormat;
@@ -23,8 +25,7 @@ public class LocalFileInputFormat extends InputFormat<Text,Text>
 			TaskAttemptContext arg1) throws IOException,
 			InterruptedException {
 		SingleFileInputSplit oneSpilt=(SingleFileInputSplit) arg0;
-		if(oneSpilt!=null)System.out.println(oneSpilt.getFileName());
-		RecordReader<Text, Text>result=new FileContextRecordReader(new Text(oneSpilt.getFileName()),new Text(oneSpilt.getFileContext()),arg1.getConfiguration());
+		RecordReader<Text, Text>result=new FileContextRecordReader(new Text(oneSpilt.getFileName()),new Text(oneSpilt.getFileContext()));
 		return result;
 	}
 
@@ -75,7 +76,6 @@ public class LocalFileInputFormat extends InputFormat<Text,Text>
 				            		fin.close();
 	            	}
 	            }
-	            System.out.println(out.size());
 		return out;
 	}
 	
